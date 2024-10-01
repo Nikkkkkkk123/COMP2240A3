@@ -57,7 +57,7 @@ public class FixedLTR extends CPU{
         int process = pid;
         int previousProcess = getPreviousProcess(pid);
         int lastPageUsed = getLastPagePreviousProcess(previousProcess);
-        for (int i = (lastPageUsed); i <= lastPage.get(process); i++) {
+        for (int i = (lastPageUsed + 1); i <= lastPage.get(process); i++) {
             if (mainMemory.get(i).getPageNumber() == page) {
                 return true;
             }
@@ -72,7 +72,7 @@ public class FixedLTR extends CPU{
 
     private int getLastPagePreviousProcess(int previousProcess) {
         if (previousProcess == 0) {
-            return firstPage.get(1);
+            return (firstPage.get(1) - 1);
         }
         return lastPage.get(previousProcess);
     }
@@ -83,14 +83,10 @@ public class FixedLTR extends CPU{
         int nextPage = currentPage.get(pid);
         
         if (nextPage > lastPage.get(pid)) {
-            currentPage.put(pid, firstPage.get(pid));
             nextPage = firstPage.get(pid);
-            mainMemory.get(nextPage).setPageNumber(page);
         }
-        else {
-            mainMemory.get(nextPage).setPageNumber(page);
-            currentPage.put(pid, nextPage + 1);
-        }
+        mainMemory.get(nextPage).setPageNumber(page);
+        currentPage.put(pid, nextPage + 1);
     }
 
     @Override

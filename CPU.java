@@ -56,9 +56,12 @@ public abstract class CPU {
                             currentProcess.setStatus();
                             currentProcess.setBlockedTime(currentTime);
                             currentProcess.addFaultTime(currentTime);
+                            // Something goes wrong attime 26 (actually being 27 because of the incrementation)
+                            System.out.println(currentProcess.getPid() + " " + currentTime);
                             break;
                         }
                         else {
+                            //System.out.println("Process: " +currentProcess.getPid()+ " Page: " + currentProcess.getPage() + " Time: " + currentTime);
                             currentProcess.getPage(); // Remove the page from the queue
                             if (currentProcess.getPagesQueue().isEmpty()) {
                                 currentTime++;
