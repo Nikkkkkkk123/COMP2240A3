@@ -28,13 +28,17 @@ public class A3 {
      * Description: This method is used to run the program
      */
     public void run(String[] args) {
-        String[] test = "15 3 Process1.txt Process2.txt Process3.txt Process4.txt".split(" "); // Create a test array
-        getProcessInformation(test); // Call the getProcessInformation method
+        // String[] test = "30 3 Process1.txt Process2.txt Process3.txt Process4.txt".split(" "); // Create a test array
+        getProcessInformation(args); // Call the getProcessInformation method
 
         // Run the FixedLTR algorithm
         FixedLTR fixedLTR = new FixedLTR(timeQuantum, "Fixed", fixedProcessList, frameSize); // Create a new FixedLTR object
         fixedLTR.run(); // Call the run method
         fixedLTR.printResults(); // Call the printResults method
+
+        VariableLTR variableLTR = new VariableLTR(timeQuantum, "Variable", variableProcessList, frameSize); // Create a new VariableLTR object
+        variableLTR.run(); // Call the run method
+        variableLTR.printResults(); // Call the printResults method
 
     }
 
