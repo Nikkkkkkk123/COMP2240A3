@@ -1,7 +1,5 @@
 import java.util.List;
-import java.util.Queue;
 import java.util.HashMap;  
-import java.util.LinkedList; 
 
 public class FixedLTR extends CPU{
     private HashMap<Integer, Frame> mainMemory;
@@ -13,14 +11,15 @@ public class FixedLTR extends CPU{
     public FixedLTR(int timeQuantum, String allocationType, List<Process> processList, int frameSize) {
         super(timeQuantum, allocationType, processList);
         mainMemory = new HashMap<>();
-        totalAllocatedFrames = Math.floorDiv(frameSize, processList.size());
         currentPage = new HashMap<>();
         lastPage = new HashMap<>();
         firstPage = new HashMap<>();
+        totalAllocatedFrames = Math.floorDiv(frameSize, processList.size());
         allocateFrames(processList, frameSize);
     }
 
-    private void allocateFrames(List<Process> processList, int maxFrames) {
+    @Override
+    protected void allocateFrames(List<Process> processList, int maxFrames) {
         int usedFrames = 0;
         for (Process process : processList) {
             for (int i = 0; i < totalAllocatedFrames; i++) {
@@ -36,19 +35,6 @@ public class FixedLTR extends CPU{
         while (mainMemory.size() < maxFrames) {
             usedFrames++;
             mainMemory.put(usedFrames, new Frame(-1));
-        }
-    }
-
-    /*
-     * Description: This method is used to start the ready queue
-     * Parameters: time
-     * Returns: None
-     */
-    @Override
-    protected void startReadyQueue(int time) {
-        for (Process process : processList) {
-            process.setStatus();
-            readyQueue.add(process);
         }
     }
 
@@ -87,20 +73,6 @@ public class FixedLTR extends CPU{
         }
         mainMemory.get(nextPage).setPageNumber(page);
         currentPage.put(pid, nextPage + 1);
-    }
-
-    @Override
-    protected void checkBlockedQueueTime(int time) {
-        Queue<Process> tempBlockedQueue = new LinkedList<>();
-        tempBlockedQueue.addAll(blockedQueue);
-        for (Process process : tempBlockedQueue) {
-            if ((time - process.getBlockedTime()) >= 4) {
-                process.setStatus();
-                readyQueue.add(process);
-                allocatePage(process, process.getPeekPage());
-                blockedQueue.remove(process);
-            }
-        }
     }
 
     @Override

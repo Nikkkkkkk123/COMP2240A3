@@ -35,7 +35,7 @@ public abstract class CPU {
     }
 
     public void run () {
-        startReadyQueue(currentTime);
+        startReadyQueue();
         while (!readyQueue.isEmpty() || !blockedQueue.isEmpty()) {
             if (!readyQueue.isEmpty()) {
                 currentProcess = readyQueue.poll();
@@ -79,6 +79,9 @@ public abstract class CPU {
                         readyQueue.add(currentProcess);
                     }
                     else if (currentProcess.getStatus().equals("Empty")) {
+                        if (allocationType.equals("Variable")) {
+                            removeUsedFrames(currentProcess);
+                        }
                         currentProcess.setTurnAroundTime(currentTime);
                     }
                 }
@@ -86,23 +89,38 @@ public abstract class CPU {
             else {
                 currentTime++;
                 if (!blockedQueue.isEmpty()) {
-                    Queue<Process> tempQueue = new LinkedList<Process>();
-                    tempQueue.addAll(blockedQueue);
-                    for (Process process : tempQueue) {
-                        if ((currentTime - process.getBlockedTime()) == 4) {
-                            process.setStatus();
-                            allocatePage(process, process.getPeekPage());
-                            readyQueue.add(blockedQueue.poll());
-                        }
-                    }
+                    checkBlockedQueueTime(currentTime);
                 }
             }
         }
     }
 
-    protected abstract void startReadyQueue(int time);
+    private void startReadyQueue() {
+        for (Process process : processList) {
+            process.setStatus();
+            readyQueue.add(process);
+        }
+    }
+
+    private void checkBlockedQueueTime(int time) {
+        Queue<Process> tempBlockedQueue = new LinkedList<>();
+        tempBlockedQueue.addAll(blockedQueue);
+        for (Process process : tempBlockedQueue) {
+            if ((time - process.getBlockedTime()) >= 4) {
+                process.setStatus();
+                readyQueue.add(process);
+                allocatePage(process, process.getPeekPage());
+                blockedQueue.remove(process);
+            }
+        }
+    }
+
+    protected void removeUsedFrames(Process process) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    protected abstract void allocateFrames(List<Process> processList, int maxFrames);
     protected abstract boolean searchForPage(int pid, int page);
     protected abstract void allocatePage(Process process, int page);
-    protected abstract void checkBlockedQueueTime(int time);
     protected abstract void printResults();
 }
