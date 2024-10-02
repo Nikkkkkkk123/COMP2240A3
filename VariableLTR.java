@@ -32,9 +32,11 @@ public class VariableLTR extends CPU {
 
     @Override
     protected void allocatePage(Process process, int page)  {
-        if (currentFrame > mainMemory.size()) {
-            checkForEmptyFrames();
+        checkForEmptyFrames();
+        if (mainMemory.get(currentFrame).getOwnerProcess() == 4 && mainMemory.get(currentFrame).getPageNumber() == 9) {
+            System.out.println();
         }
+        mainMemory.get(currentFrame).setTimeAdded(currentTime);
         mainMemory.get(currentFrame).setOwnerProcess(process.getPid());
         mainMemory.get(currentFrame).setPageNumber(page);
         currentFrame++;
@@ -51,15 +53,25 @@ public class VariableLTR extends CPU {
     }
 
     private void checkForEmptyFrames() {
+        int lowestTime = Integer.MAX_VALUE;
         for (int i = 1; i <= mainMemory.size(); i++) {
             if (mainMemory.get(i).getOwnerProcess() == -1) {
                 currentFrame = i;
-                break;
+                return;
+            }
+            else if (mainMemory.get(i).getTimeAdded() < lowestTime) {
+                if (mainMemory.get(i).getTimeAdded() == -1) {
+                    continue;
+                }
+                lowestTime = mainMemory.get(i).getTimeAdded();
+                currentFrame = i;
             }
         }
-        if (currentFrame > mainMemory.size()) {
-            currentFrame = 1;
+        if (lowestTime != -1) {
+            return;
         }
+        currentFrame = 1;
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 class Frame {
     private int ownerProcess;
     private int pageNumber;
+    private int timeAdded;
 
     /*
      * Description: Default constructor for the Frame class
@@ -10,6 +11,7 @@ class Frame {
     public Frame () {
         ownerProcess = -1;
         pageNumber = -1;
+        timeAdded = -1;
     }
 
     /*
@@ -36,5 +38,12 @@ class Frame {
 
     public int getPageNumber() {
         return pageNumber;
+    }
+    public void setTimeAdded(int timeAdded) {
+        this.timeAdded = timeAdded;
+    }
+
+    public int getTimeAdded() {
+        return timeAdded;
     }
 }

@@ -44,6 +44,7 @@ public abstract class CPU {
                     currentProcess.setStatus();
                     currentProcess.setBlockedTime(currentTime);
                     currentProcess.addFaultTime(currentTime);
+                    //System.out.println(currentProcess.getPid() + " " + currentTime + " " + page);
                     blockedQueue.add(currentProcess);
                 }
                 else {
@@ -53,6 +54,7 @@ public abstract class CPU {
                             break;
                         }
                         else if (!searchForPage(currentProcess.getPid(), currentProcess.getPeekPage())) {
+                            //System.out.println(currentProcess.getPid() + " " + currentTime+ " " + currentProcess.getPeekPage());
                             currentProcess.setStatus();
                             currentProcess.setBlockedTime(currentTime);
                             currentProcess.addFaultTime(currentTime);

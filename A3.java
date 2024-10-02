@@ -28,7 +28,7 @@ public class A3 {
      * Description: This method is used to run the program
      */
     public void run(String[] args) {
-        // String[] test = "30 3 Process1.txt Process2.txt Process3.txt Process4.txt".split(" "); // Create a test array
+        //String[] test = "15 3 Process1.txt Process2.txt Process3.txt Process4.txt".split(" "); // Create a test array
         getProcessInformation(args); // Call the getProcessInformation method
 
         // Run the FixedLTR algorithm
