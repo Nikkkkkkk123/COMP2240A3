@@ -34,7 +34,7 @@ public abstract class CPU {
         this.processList = processList;
     }
 
-    public void run () {
+    public void run() {
         startReadyQueue();
         while (!readyQueue.isEmpty() || !blockedQueue.isEmpty()) {
             if (!readyQueue.isEmpty()) {
@@ -44,23 +44,21 @@ public abstract class CPU {
                     currentProcess.setStatus();
                     currentProcess.setBlockedTime(currentTime);
                     currentProcess.addFaultTime(currentTime);
-                    //System.out.println(currentProcess.getPid() + " " + currentTime + " " + page);
+                    // System.out.println(currentProcess.getPid() + " " + currentTime + " " + page);
                     blockedQueue.add(currentProcess);
-                }
-                else {
+                } else {
                     int simulationTime = 0;
                     while (currentProcess.getStatus().equals("Ready") && simulationTime < timeQuantum) {
                         if (currentProcess.getPagesQueue().isEmpty()) {
                             break;
-                        }
-                        else if (!searchForPage(currentProcess.getPid(), currentProcess.getPeekPage())) {
-                            //System.out.println(currentProcess.getPid() + " " + currentTime+ " " + currentProcess.getPeekPage());
+                        } else if (!searchForPage(currentProcess.getPid(), currentProcess.getPeekPage())) {
+                            // System.out.println(currentProcess.getPid() + " " + currentTime+ " " +
+                            // currentProcess.getPeekPage());
                             currentProcess.setStatus();
                             currentProcess.setBlockedTime(currentTime);
                             currentProcess.addFaultTime(currentTime);
                             break;
-                        }
-                        else {
+                        } else {
                             currentProcess.getPage(); // Remove the page from the queue
                             if (currentProcess.getPagesQueue().isEmpty()) {
                                 currentTime++;
@@ -76,19 +74,16 @@ public abstract class CPU {
                     if (currentProcess.getStatus().equals("Blocked")) {
                         checkBlockedQueueTime(currentTime);
                         blockedQueue.add(currentProcess);
-                    }
-                    else if (currentProcess.getStatus().equals("Ready")) {
+                    } else if (currentProcess.getStatus().equals("Ready")) {
                         readyQueue.add(currentProcess);
-                    }
-                    else if (currentProcess.getStatus().equals("Empty")) {
+                    } else if (currentProcess.getStatus().equals("Empty")) {
                         if (allocationType.equals("Variable")) {
                             removeUsedFrames(currentProcess);
                         }
                         currentProcess.setTurnAroundTime(currentTime);
                     }
                 }
-            }
-            else {
+            } else {
                 currentTime++;
                 if (!blockedQueue.isEmpty()) {
                     checkBlockedQueueTime(currentTime);
@@ -118,11 +113,14 @@ public abstract class CPU {
     }
 
     protected void removeUsedFrames(Process process) {
-        throw new UnsupportedOperationException("Not supported.");
+
     }
 
     protected abstract void allocateFrames(List<Process> processList, int maxFrames);
+
     protected abstract boolean searchForPage(int pid, int page);
+
     protected abstract void allocatePage(Process process, int page);
+
     protected abstract void printResults();
 }

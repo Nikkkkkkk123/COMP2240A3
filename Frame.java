@@ -8,7 +8,7 @@ class Frame {
      * Parameters: None
      * Returns: none
      */
-    public Frame () {
+    public Frame() {
         ownerProcess = -1;
         pageNumber = -1;
         timeAdded = -1;
@@ -39,6 +39,7 @@ class Frame {
     public int getPageNumber() {
         return pageNumber;
     }
+
     public void setTimeAdded(int timeAdded) {
         this.timeAdded = timeAdded;
     }

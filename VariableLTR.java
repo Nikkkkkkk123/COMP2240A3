@@ -1,5 +1,5 @@
 import java.util.List;
-import java.util.HashMap;  
+import java.util.HashMap;
 
 public class VariableLTR extends CPU {
     private HashMap<Integer, Frame> mainMemory;
@@ -9,7 +9,7 @@ public class VariableLTR extends CPU {
         super(timeQuantum, allocationType, processList);
         mainMemory = new HashMap<>();
         allocateFrames(processList, frameSize);
-        
+
     }
 
     @Override
@@ -21,7 +21,7 @@ public class VariableLTR extends CPU {
     }
 
     @Override
-    protected boolean searchForPage (int pid, int page) {
+    protected boolean searchForPage(int pid, int page) {
         for (int i = 1; i <= mainMemory.size(); i++) {
             if (mainMemory.get(i).getOwnerProcess() == pid && mainMemory.get(i).getPageNumber() == page) {
                 return true;
@@ -31,7 +31,7 @@ public class VariableLTR extends CPU {
     }
 
     @Override
-    protected void allocatePage(Process process, int page)  {
+    protected void allocatePage(Process process, int page) {
         checkForEmptyFrames();
         if (mainMemory.get(currentFrame).getOwnerProcess() == 4 && mainMemory.get(currentFrame).getPageNumber() == 9) {
             System.out.println();
@@ -48,6 +48,7 @@ public class VariableLTR extends CPU {
             if (mainMemory.get(i).getOwnerProcess() == process.getPid()) {
                 mainMemory.get(i).setOwnerProcess(-1);
                 mainMemory.get(i).setPageNumber(-1);
+                mainMemory.get(i).setTimeAdded(-1);
             }
         }
     }
@@ -58,8 +59,7 @@ public class VariableLTR extends CPU {
             if (mainMemory.get(i).getOwnerProcess() == -1) {
                 currentFrame = i;
                 return;
-            }
-            else if (mainMemory.get(i).getTimeAdded() < lowestTime) {
+            } else if (mainMemory.get(i).getTimeAdded() < lowestTime) {
                 if (mainMemory.get(i).getTimeAdded() == -1) {
                     continue;
                 }
@@ -77,10 +77,12 @@ public class VariableLTR extends CPU {
     @Override
     protected void printResults() {
         System.out.println("\nLRU - Variable-Global Replacement:");
-        System.out.printf("%-5s %-15s %-17s %-10s %s%n", "PID", "Process Name", "Turnaround Time", "# Faults", "Fault Times");
+        System.out.printf("%-5s %-15s %-17s %-10s %s%n", "PID", "Process Name", "Turnaround Time", "# Faults",
+                "Fault Times");
         for (Process process : processList) {
-            System.out.printf("%-5d %-15s %-17d %-10d %s%n", process.getPid() , process.getProcessName(), process.getTurnAroundTime() , process.getFaultTimes().size(), process.outputFaultTimes());
+            System.out.printf("%-5d %-15s %-17d %-10d %s%n", process.getPid(), process.getProcessName(),
+                    process.getTurnAroundTime(), process.getFaultTimes().size(), process.outputFaultTimes());
         }
     }
 
-} 
+}

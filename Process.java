@@ -64,8 +64,7 @@ public class Process {
     public void setStatus() {
         if (status.equals("Blocked")) {
             status = "Ready";
-        }
-        else {
+        } else {
             status = "Blocked";
         }
     }

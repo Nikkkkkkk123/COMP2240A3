@@ -1,7 +1,7 @@
 import java.util.List;
-import java.util.HashMap;  
+import java.util.HashMap;
 
-public class FixedLTR extends CPU{
+public class FixedLTR extends CPU {
     private HashMap<Integer, Frame> mainMemory;
     private HashMap<Integer, Integer> currentPage; // Stores the next available page for a process
     private HashMap<Integer, Integer> lastPage; // Stores the last page used by a process
@@ -67,7 +67,7 @@ public class FixedLTR extends CPU{
     protected void allocatePage(Process process, int page) {
         int pid = process.getPid();
         int nextPage = currentPage.get(pid);
-        
+
         if (nextPage > lastPage.get(pid)) {
             nextPage = firstPage.get(pid);
         }
@@ -78,9 +78,11 @@ public class FixedLTR extends CPU{
     @Override
     protected void printResults() {
         System.out.println("LRU - Fixed-Local Replacement:");
-        System.out.printf("%-5s %-15s %-17s %-10s %s%n", "PID", "Process Name", "Turnaround Time", "# Faults", "Fault Times");
+        System.out.printf("%-5s %-15s %-17s %-10s %s%n", "PID", "Process Name", "Turnaround Time", "# Faults",
+                "Fault Times");
         for (Process process : processList) {
-            System.out.printf("%-5d %-15s %-17d %-10d %s%n", process.getPid() , process.getProcessName(), process.getTurnAroundTime() , process.getFaultTimes().size(), process.outputFaultTimes());
+            System.out.printf("%-5d %-15s %-17d %-10d %s%n", process.getPid(), process.getProcessName(),
+                    process.getTurnAroundTime(), process.getFaultTimes().size(), process.outputFaultTimes());
         }
         System.out.println();
         System.out.println("------------------------------------------------------------");
