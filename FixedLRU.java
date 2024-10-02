@@ -1,14 +1,14 @@
 import java.util.List;
 import java.util.HashMap;
 
-public class FixedLTR extends CPU {
+public class FixedLRU extends CPU {
     private HashMap<Integer, Frame> mainMemory;
     private HashMap<Integer, Integer> currentPage; // Stores the next available page for a process
     private HashMap<Integer, Integer> lastPage; // Stores the last page used by a process
     private HashMap<Integer, Integer> firstPage; // Stores the first page used by a process
     private int totalAllocatedFrames;
 
-    public FixedLTR(int timeQuantum, String allocationType, List<Process> processList, int frameSize) {
+    public FixedLRU(int timeQuantum, String allocationType, List<Process> processList, int frameSize) {
         super(timeQuantum, allocationType, processList);
         mainMemory = new HashMap<>();
         currentPage = new HashMap<>();

@@ -1,11 +1,11 @@
 import java.util.List;
 import java.util.HashMap;
 
-public class VariableLTR extends CPU {
+public class VariableLRU extends CPU {
     private HashMap<Integer, Frame> mainMemory;
     private int currentFrame;
 
-    public VariableLTR(int timeQuantum, String allocationType, List<Process> processList, int frameSize) {
+    public VariableLRU(int timeQuantum, String allocationType, List<Process> processList, int frameSize) {
         super(timeQuantum, allocationType, processList);
         mainMemory = new HashMap<>();
         allocateFrames(processList, frameSize);

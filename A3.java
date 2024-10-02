@@ -33,12 +33,12 @@ public class A3 {
         getProcessInformation(args); // Call the getProcessInformation method
 
         // Run the FixedLTR algorithm
-        FixedLTR fixedLTR = new FixedLTR(timeQuantum, "Fixed", fixedProcessList, frameSize); // Create a new FixedLTR
+        FixedLRU fixedLTR = new FixedLRU(timeQuantum, "Fixed", fixedProcessList, frameSize); // Create a new FixedLTR
                                                                                              // object
         fixedLTR.run(); // Call the run method
         fixedLTR.printResults(); // Call the printResults method
 
-        VariableLTR variableLTR = new VariableLTR(timeQuantum, "Variable", variableProcessList, frameSize); // Create a
+        VariableLRU variableLTR = new VariableLRU(timeQuantum, "Variable", variableProcessList, frameSize); // Create a
                                                                                                             // new
                                                                                                             // VariableLTR
                                                                                                             // object
