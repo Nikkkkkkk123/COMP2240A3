@@ -33,9 +33,6 @@ public class VariableLRU extends CPU {
     @Override
     protected void allocatePage(Process process, int page) {
         checkForEmptyFrames();
-        if (mainMemory.get(currentFrame).getOwnerProcess() == 4 && mainMemory.get(currentFrame).getPageNumber() == 9) {
-            System.out.println();
-        }
         mainMemory.get(currentFrame).setTimeAdded(currentTime);
         mainMemory.get(currentFrame).setOwnerProcess(process.getPid());
         mainMemory.get(currentFrame).setPageNumber(page);
