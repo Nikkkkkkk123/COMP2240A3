@@ -113,7 +113,7 @@ public abstract class CPU {
     }
 
     protected void removeUsedFrames(Process process) {
-
+        // Left blank as FixedLRU does not need to remove frames
     }
 
     protected abstract void allocateFrames(List<Process> processList, int maxFrames);
