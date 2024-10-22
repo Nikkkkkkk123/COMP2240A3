@@ -59,7 +59,7 @@ public abstract class CPU {
                             currentProcess.addFaultTime(currentTime);
                             break;
                         } else {
-                            currentProcess.getPage(); // Remove the page from the queue
+                            int currentPage = currentProcess.getPage(); // Remove the page from the queue
                             if (currentProcess.getPagesQueue().isEmpty()) {
                                 currentTime++;
                                 currentProcess.setEmpty();
@@ -68,6 +68,8 @@ public abstract class CPU {
                             }
                             currentTime++;
                             checkBlockedQueueTime(currentTime);
+                            // Update the time on the pages in the main memory
+                            updatePage(currentProcess.getPid(), currentPage, currentTime);
                             simulationTime++;
                         }
                     }
@@ -117,6 +119,8 @@ public abstract class CPU {
     }
 
     protected abstract void allocateFrames(List<Process> processList, int maxFrames);
+
+    protected abstract void updatePage(int pid, int page, int time);
 
     protected abstract boolean searchForPage(int pid, int page);
 
