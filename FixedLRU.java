@@ -39,6 +39,15 @@ public class FixedLRU extends CPU {
     }
 
     @Override
+    protected void updatePage(int pid, int page, int time) {
+        for (int i = 1; i <= lastPage.get(pid); i++) {
+            if (mainMemory.get(i).getOwnerProcess() == pid && mainMemory.get(i).getPageNumber() == page) {
+                mainMemory.get(i).setTimeAdded(time);
+            }
+        }
+    }
+
+    @Override
     protected boolean searchForPage(int pid, int page) {
         int process = pid;
         int previousProcess = getPreviousProcess(pid);
@@ -66,11 +75,16 @@ public class FixedLRU extends CPU {
     @Override
     protected void allocatePage(Process process, int page) {
         int pid = process.getPid();
-        int nextPage = currentPage.get(pid);
+        int leastUsedTime = Integer.MAX_VALUE;
+        int nextPage = 0;
 
-        if (nextPage > lastPage.get(pid)) {
-            nextPage = firstPage.get(pid);
+        for (int i = firstPage.get(pid); i <= lastPage.get(pid); i++) {
+            if (mainMemory.get(i).getTimeAdded() < leastUsedTime) {
+                leastUsedTime = mainMemory.get(i).getTimeAdded();
+                nextPage = i;
+            }
         }
+        
         mainMemory.get(nextPage).setPageNumber(page);
         currentPage.put(pid, nextPage + 1);
     }

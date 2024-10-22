@@ -40,6 +40,15 @@ public class VariableLRU extends CPU {
     }
 
     @Override
+    protected void updatePage(int pid, int page, int time) {
+        for (int i = 1; i <= mainMemory.size(); i++) {
+            if (mainMemory.get(i).getOwnerProcess() == pid && mainMemory.get(i).getPageNumber() != -1) {
+                mainMemory.get(i).setTimeAdded(time);
+            }
+        }
+    }
+
+    @Override
     protected void removeUsedFrames(Process process) {
         for (int i = 1; i <= mainMemory.size(); i++) {
             if (mainMemory.get(i).getOwnerProcess() == process.getPid()) {
@@ -47,6 +56,17 @@ public class VariableLRU extends CPU {
                 mainMemory.get(i).setPageNumber(-1);
                 mainMemory.get(i).setTimeAdded(-1);
             }
+        }
+    }
+
+    @Override
+    protected void printResults() {
+        System.out.println("\nLRU - Variable-Global Replacement:");
+        System.out.printf("%-5s %-15s %-17s %-10s %s%n", "PID", "Process Name", "Turnaround Time", "# Faults",
+                "Fault Times");
+        for (Process process : processList) {
+            System.out.printf("%-5d %-15s %-17d %-10d %s%n", process.getPid(), process.getProcessName(),
+                    process.getTurnAroundTime(), process.getFaultTimes().size(), process.outputFaultTimes());
         }
     }
 
@@ -70,16 +90,4 @@ public class VariableLRU extends CPU {
         currentFrame = 1;
 
     }
-
-    @Override
-    protected void printResults() {
-        System.out.println("\nLRU - Variable-Global Replacement:");
-        System.out.printf("%-5s %-15s %-17s %-10s %s%n", "PID", "Process Name", "Turnaround Time", "# Faults",
-                "Fault Times");
-        for (Process process : processList) {
-            System.out.printf("%-5d %-15s %-17d %-10d %s%n", process.getPid(), process.getProcessName(),
-                    process.getTurnAroundTime(), process.getFaultTimes().size(), process.outputFaultTimes());
-        }
-    }
-
 }
